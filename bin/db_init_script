@@ -1,0 +1,107 @@
+
+-- after removing headers from feed files
+
+-- Written for Sqlite, for quicker environment setup chose sqlite at the cost of loss of functionality which could have reduced the code size here.
+
+-- Most of the heavy-lifting is done here(more like a usual ETL process), towards a session traffic log is created over which running some basic aggregate query would return the right result.
+
+-- session_traffic_log(end_output over which node/express app just acts as a simple wrapper) could be further to support timeseries data
+
+
+
+.mode csv
+
+drop table if exists segments;
+create table segments(segment_id integer, from_stop integer, to_stop integer, distance double,
+primary key(segment_id)
+);
+.import static_db/homework_segments.csv segments
+-- 457, 457 segments
+
+
+drop table if exists route_segments;
+create table route_segments(route_id integer, segment_id integer, sequence integer,
+foreign key(segment_id) REFERENCES segments(segment_id)
+);
+create index route_segments_route_id_indx on route_segments(route_id);
+.import static_db/homework_route_segments.csv route_segments
+-- 1767, 1767 route/segment pairs
+
+drop table if exists rides;
+create table rides(ride_id integer, from_stop integer, to_stop integer, route_id integer,
+primary key(ride_id));
+create index rides_route_id_indx on rides(route_id);
+.import static_db/homework_rides.csv rides
+-- 61168 rows 318 routes, 61168 rides
+
+
+drop table if exists tickets;
+create table tickets(ride_id integer, from_stop integer, to_stop integer, `date` date, description text, `transaction` varchar(255), price double);
+create index tickets_ride_id_indx on tickets(ride_id);
+.import static_db/homework_tickets.csv tickets
+-- 3687250 rows, 3248753 transactions,75162 rides
+
+
+
+drop table if exists ride_with_start_end_seg;
+
+create temp table ride_with_start_end_seg as
+select 
+a.`transaction` as `transaction`,
+a.ride_id as ride_id,
+min(b.route_id) as route_id,
+min(c.sequence) as seg_seq_start,
+max(c.sequence) as seg_seq_last,
+min(a.price) as price
+from
+tickets a
+inner join rides b on a.ride_id = b.ride_id
+inner join route_segments c on b.route_id = c.route_id
+inner join segments d on d.segment_id = c.segment_id  and (d.from_stop = a.from_stop or d.to_stop = a.to_stop)
+group by a.`transaction`, a.ride_id
+;
+
+-- 3454992 rows, 3067439 unq transactions, 318 unq routes, 61168 rides
+
+
+drop table if exists ride_with_travelled_seg;
+
+create temp table ride_with_travelled_seg as 
+select
+a.`transaction` as `transaction`,
+a.ride_id as ride_id,
+a.route_id as route_id,
+c.segment_id as segment_id,
+c.distance as distance,
+a.price as price
+from 
+ride_with_start_end_seg a
+inner join route_segments b on a.route_id = b.route_id and b.sequence <= a.seg_seq_last and b.sequence >= a.seg_seq_start
+inner join segments c on b.segment_id = c.segment_id
+;
+
+
+-- 8873209 rows, 61168 rides
+
+drop table if exists segment_traffic_log;
+create table segment_traffic_log as
+select 
+a.`transaction` as `transaction`,
+a.ride_id as ride_id,
+a.route_id as route_id,
+a.segment_id as segment_id,
+a.distance as distance,
+a.price as trip_price,
+a.distance * a.price / b.trip_distance as segment_price
+from 
+ride_with_travelled_seg a
+inner join (
+		select `transaction`, ride_id, sum(distance) as trip_distance from ride_with_travelled_seg group by `transaction`, ride_id
+	) b on a.`transaction`=b.`transaction` and a.ride_id = b.ride_id
+;
+create index freq_lookup_rides_seg_id on segment_traffic_log(segment_id);
+-- 8873209 rows
+
+select count(*), sum(segment_price) from segment_traffic_log where segment_id=157;
+
+.exit

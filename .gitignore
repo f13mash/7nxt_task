@@ -1,7 +1,8 @@
+.DS_Store
 node_modules
 *.sublime-*
 .idea
 logs/
 .bower-*
 public/libs
-
+*.db
