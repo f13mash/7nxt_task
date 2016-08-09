@@ -26,3 +26,6 @@ When application is started with `npm run start` it launched bin/app.js script.
 Currently, api returns both(i.e. PAX and Revenue figures) as **segment_traffic_log** table and has been optimized to cater to generating both the metrics.
 
 To look inside the the database, run `sqlite3 flixbus.db`
+
+
+[ This project uses boilerplate created few years back at https://github.com/indulgin/Express-Boilerplate ]
