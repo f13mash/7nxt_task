@@ -3,9 +3,9 @@
 
 -- Written for Sqlite, for quicker environment setup chose sqlite at the cost of loss of functionality which could have reduced the code size here.
 
--- Most of the heavy-lifting is done here(more like a usual ETL process), towards a session traffic log is created over which running some basic aggregate query would return the right result.
+-- Most of the heavy-lifting is done here(more like a usual ETL process), towards end a session traffic log is created over which running some basic aggregate query would return the right result.
 
--- session_traffic_log(end_output over which node/express app just acts as a simple wrapper) could be further to support timeseries data
+-- session_traffic_log(end_output over which node/express app just acts as a simple wrapper) can work with timeseries data
 
 
 
