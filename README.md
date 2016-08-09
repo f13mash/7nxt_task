@@ -1,4 +1,4 @@
-As part of npmsetup_db
+As part of `npm run setup_db`
 * Download feeds to static_db directory
 * Run db_init_script
 * db_init_script generated a table **segment_traffic_log** , which contains every transaction/ride/segment travelled along with the revenue generated just due to that segment for a given ticket
