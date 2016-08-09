@@ -1,6 +1,6 @@
-# flix_rep
+Welcome to the flix_rep wiki!
 
-* Steps
-from inside the project directory
-To load the feeds and prepare the database run[FIRST TIME]: npm run setup_db 
-To start the app: npm run start
+## Steps
+
+* To setup the data base run[First Time]: `num run setup_db`
+* To start the application: `npm run start`
