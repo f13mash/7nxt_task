@@ -14,7 +14,7 @@ From inside the project directory run
 As part of `npm run setup_db`
 * Download feeds to static_db directory
 * Run db_init_script
-* db_init_script generated a table **segment_traffic_log** , which contains every transaction/ride/segment travelled along with the revenue generated just due to that segment for a given ticket
+* db_init_script generates a table **segment_traffic_log** , which contains every transaction/ride/segment travelled along with the revenue generated for a given ticket
 
 When application is started with `npm run start` it launched bin/app.js script.
 * **lib/server** create the app and configure the servers
