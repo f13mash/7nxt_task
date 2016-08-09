@@ -1,3 +1,9 @@
+Project Requisites
+* Sqlite3
+* Node.js
+* Express
+* Npm
+
 As part of `npm run setup_db`
 * Download feeds to static_db directory
 * Run db_init_script
