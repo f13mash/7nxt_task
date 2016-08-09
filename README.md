@@ -5,10 +5,10 @@ Project Requisites
 * Npm
  
 From inside the project directory run 
-1. `npm install`
-2. `npm run setup_db`
-3. `npm run start`
-4. Open http://localhost:4000/segment/157
+* `npm install`
+* `npm run setup_db`
+* `npm run start`
+* open [http://localhost:4000/segment/157](http://localhost:4000/segment/157)
 
 
 As part of `npm run setup_db`
