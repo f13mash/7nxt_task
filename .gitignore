@@ -6,4 +6,4 @@ logs/
 .bower-*
 public/libs
 *.db
-static_db
+static_db/*.csv
