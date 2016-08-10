@@ -14,7 +14,7 @@ From inside the project directory run
 As part of `npm run setup_db`
 * Download feeds to static_db directory
 * Run db_init_script
-* db_init_script generated a table **segment_traffic_log** , which contains every transaction/ride/segment travelled along with the revenue generated just due to that segment for a given ticket
+* db_init_script generates a table **segment_traffic_log** , which contains every transaction/ride/segment travelled along with the revenue generated for a given ticket
 
 When application is started with `npm run start` it launched bin/app.js script.
 * **lib/server** create the app and configure the servers
@@ -26,3 +26,6 @@ When application is started with `npm run start` it launched bin/app.js script.
 Currently, api returns both(i.e. PAX and Revenue figures) as **segment_traffic_log** table and has been optimized to cater to generating both the metrics.
 
 To look inside the the database, run `sqlite3 flixbus.db`
+
+
+[ This project uses boilerplate created few years back at https://github.com/indulgin/Express-Boilerplate ]
