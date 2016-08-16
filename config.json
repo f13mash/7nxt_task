@@ -1,4 +1,8 @@
 {
+  "db": {
+    "url": "mongodb://localhost:27017/db_7nxt",
+    "log": "logs/db.log"
+  },
   "url": "http://127.0.0.1:4000",
   "db_path": "flixbus.db"
 }
